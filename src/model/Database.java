@@ -430,4 +430,27 @@ public class Database {
     return false;
 }
 
+    public ArrayList<ArrayList<String>> getAllCorruptionCases() {
+    ArrayList<ArrayList<String>> corruptionCases = new ArrayList<>();
+    String query = "SELECT * FROM reports";
+
+    try (Connection conn = Database.getConnection();
+         PreparedStatement st = conn.prepareStatement(query);
+         ResultSet rs = st.executeQuery()) {
+
+        while (rs.next()) {
+            ArrayList<String> reportData = new ArrayList<>();
+            reportData.add(rs.getString("id"));
+            reportData.add(rs.getString("report"));
+            reportData.add(rs.getString("description"));
+            reportData.add(rs.getString("transaction"));
+            reportData.add(rs.getString("userId"));
+            corruptionCases.add(reportData);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return corruptionCases;
+}
 }

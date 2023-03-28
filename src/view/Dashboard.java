@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.UIManager;
+import model.*;
 
 /**
  *
@@ -31,7 +32,32 @@ public class Dashboard extends javax.swing.JFrame {
      */
     public Dashboard() {
         initComponents();
+        progressBar.setStringPainted(true);
+        progressBar.setValue(0);
+        // Set up the timer to animate the progress bar
+        Timer timerA = new Timer(50, new ActionListener() {
+            int progress = 0;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                progress++;
+                progressBar.setValue(progress);
+                
+                System.err.println(getCorruptionCaseNumber());
+                new Operations().getAllCorruptionCases();
+                if (progress >= 80) {
+                    ((Timer) e.getSource()).stop();
+                }
+            }
+           //Methods here will auto run            
+           
+            
+        });
+        timerA.start();
     }
+     private int getCorruptionCaseNumber() {
+                return new Operations().getAllCorruptionCases().size();
+            }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -357,6 +383,10 @@ try {
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {// GEN-FIRST:event_formWindowActivated
         // TODO add your handling code here:
+        //set name of user to dashboard
+        String currentUsername = new Operations().currentUser.get(0).getName();
+        jLabel11.setText("Hello"+ currentUsername);
+
         // detect cases from the database
         
         

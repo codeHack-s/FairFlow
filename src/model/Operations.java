@@ -7,6 +7,7 @@ import java.util.List;
 
 public class Operations {
 
+    public ArrayList<User> currentUser = new ArrayList<>();
     // method to register a new user
     public boolean registerUser(String username,String accountType, String password, String email,String organization) {
         // implementation
@@ -17,7 +18,9 @@ public class Operations {
     // method to authenticate a user
     public User authenticateUser(String username, String password) {
         // implementation
-        return new Database().authenticateUser(username,password);
+        User thisUser = new Database().authenticateUser(username,password);
+        currentUser.add(0,thisUser);
+        return thisUser;
     }
 
     // method to create a new organization will return true if creation success
@@ -122,6 +125,10 @@ public class Operations {
         return new Database().registerCorruptionCase(IdGenerator.autoIdLengthFix("reportId"),caseName,description,transactionId,userId);
     }
 
+    public ArrayList<ArrayList<String>> getAllCorruptionCases(){
+        return new Database().getAllCorruptionCases();
+    }
+    
     // method to allow managers to approve or reject transactions
     public void approveTransaction(int transactionId, boolean approved) {
         // Implementation
